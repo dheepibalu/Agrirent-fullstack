@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment - AgriRent</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/equipment.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="index.html" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:8px;">
+                <span class="brand-icon">🌾</span>
+                <span class="brand-name">AgriRent</span>
+            </a>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="equipment.html" class="active">Equipment</a></li>
+            <li id="navLogin"><a href="login.html">Login</a></li>
+            <li id="navRegister"><a href="register.html">Register</a></li>
+            <li id="navMyRentals" style="display:none"><a href="#" onclick="showMyRentals()">My Rentals</a></li>
+            <li id="navDashboard" style="display:none"><a href="dashboard.html">Dashboard</a></li>
+            <li id="navLogout" style="display:none"><a href="#" onclick="logout()">Logout</a></li>
+            <li id="navUserInfo" style="display:none; position:relative;"></li>
+        </ul>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+    </div>
+</nav>
+
+<!-- ===== PAGE HEADER ===== -->
+<div class="page-header">
+    <h1>🚜 Available Equipment</h1>
+    <p>Browse and rent high-quality farming equipment</p>
+</div>
+
+<!-- ===== FILTER BAR ===== -->
+<div class="filter-bar">
+    <div class="filter-container">
+        <input type="text" id="searchInput" placeholder="🔍 Search equipment by name...">
+        <select id="categoryFilter">
+            <option value="">All Categories</option>
+            <option value="Tractor">🚜 Tractors</option>
+            <option value="Harvester">🌾 Harvesters</option>
+            <option value="Tiller">⚙️ Tillers</option>
+            <option value="Irrigation">💧 Irrigation</option>
+            <option value="Sprayer">🌿 Sprayers</option>
+            <option value="Planting">🌱 Planting</option>
+            <option value="Excavator">🏗️ Excavators</option>
+        </select>
+        <select id="statusFilter">
+            <option value="">All Status</option>
+            <option value="AVAILABLE">✅ Available</option>
+            <option value="RENTED">🔄 Rented</option>
+            <option value="MAINTENANCE">🔧 Maintenance</option>
+        </select>
+        <span id="equipmentCount" style="color:#757575; font-size:0.9rem; white-space:nowrap;"></span>
+    </div>
+</div>
+
+<!-- ===== EQUIPMENT GRID ===== -->
+<section class="equipment-section">
+    <div class="container">
+        <!-- Loading State -->
+        <div id="loadingState" style="text-align:center; padding:60px;">
+            <div style="font-size:3rem; margin-bottom:16px;">⏳</div>
+            <p style="color:#757575;">Loading equipment...</p>
+        </div>
+
+        <!-- Equipment Cards -->
+        <div class="equipment-grid" id="equipmentGrid" style="display:none;"></div>
+    </div>
+</section>
+
+<!-- ===== DETAILS MODAL ===== -->
+<div class="modal-overlay" id="detailsModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>📋 Equipment Details</h3>
+            <button class="modal-close" onclick="closeModal('detailsModal')">✕</button>
+        </div>
+        <div id="detailsContent"></div>
+    </div>
+</div>
+
+<!-- ===== RENT MODAL ===== -->
+<div class="modal-overlay" id="rentModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>🚜 Rent Equipment</h3>
+            <button class="modal-close" onclick="closeModal('rentModal')">✕</button>
+        </div>
+
+        <div class="rent-summary">
+            <h4 id="rentEquipmentName">Equipment Name</h4>
+            <p>Daily Rate: <strong id="rentDailyRate">₹0/day</strong></p>
+        </div>
+
+        <div id="rentAlert" class="alert" style="display:none;"></div>
+
+        <div class="form-group">
+            <label for="rentStartDate">Start Date *</label>
+            <input type="date" id="rentStartDate" onchange="calculateRentTotal()" required>
+        </div>
+
+        <div class="form-group">
+            <label for="rentEndDate">End Date *</label>
+            <input type="date" id="rentEndDate" onchange="calculateRentTotal()" required>
+        </div>
+
+        <div class="total-calc">
+            <div class="total-label">Estimated Total Cost</div>
+            <div class="total-amount" id="rentTotalAmount">₹0</div>
+        </div>
+
+        <div class="form-group">
+            <label for="rentNotes">Notes (optional)</label>
+            <textarea id="rentNotes" placeholder="Any special requirements or notes..."></textarea>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <button class="btn btn-outline" style="flex:1" onclick="closeModal('rentModal')">Cancel</button>
+            <button class="btn btn-primary" style="flex:2" id="rentSubmitBtn" onclick="submitRent()">✅ Confirm Rental</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MY RENTALS MODAL ===== -->
+<div class="modal-overlay" id="myRentalsModal">
+    <div class="modal" style="max-width:700px;">
+        <div class="modal-header">
+            <h3>📋 My Rentals</h3>
+            <button class="modal-close" onclick="closeModal('myRentalsModal')">✕</button>
+        </div>
+        <div id="myRentalsList">
+            <div style="text-align:center; padding:30px; color:#757575;">Loading...</div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>🌾 AgriRent</h3>
+                <p>Your trusted partner for agriculture equipment rental.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="equipment.html">Equipment</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>📧 info@agrirent.com</p>
+                <p>📞 +91 98765 43210</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 AgriRent — Agriculture Equipment Rental System</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/equipment.js"></script>
+</body>
+</html>

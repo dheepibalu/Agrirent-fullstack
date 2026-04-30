@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriRent - Agriculture Equipment Rental System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <span class="brand-icon">🌾</span>
+            <span class="brand-name">AgriRent</span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="equipment.html">Equipment</a></li>
+            <li id="navLogin"><a href="login.html">Login</a></li>
+            <li id="navRegister"><a href="register.html">Register</a></li>
+            <li id="navMyRentals" style="display:none"><a href="equipment.html">My Rentals</a></li>
+            <li id="navDashboard" style="display:none"><a href="dashboard.html">Dashboard</a></li>
+            <li id="navLogout" style="display:none"><a href="#" onclick="logout()">Logout</a></li>
+            <li id="navUserInfo" style="display:none; position:relative;"></li>
+        </ul>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+    </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>🌾 Agriculture Equipment Rental System</h1>
+        <p>Rent high-quality farming equipment at affordable daily rates. Tractors, harvesters, tillers, and more — available when you need them.</p>
+        <div class="hero-buttons">
+            <a href="equipment.html" class="btn btn-outline-white btn-large">Browse Equipment</a>
+            <a href="register.html" class="btn btn-secondary btn-large">Get Started Free</a>
+        </div>
+    </div>
+    <div class="hero-image">🚜</div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="statEquipment">8+</div>
+                <div class="stat-label">Equipment Available</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statUsers">2+</div>
+                <div class="stat-label">Registered Farmers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Support Available</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Satisfaction Rate</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title">Why Choose AgriRent?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Affordable Rates</h3>
+                <p>Competitive daily rental rates that fit every farmer's budget. No hidden charges.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>Well Maintained</h3>
+                <p>All equipment is regularly serviced and maintained to ensure peak performance.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Easy Booking</h3>
+                <p>Book equipment online in minutes. Simple, fast, and hassle-free process.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚚</div>
+                <h3>Wide Selection</h3>
+                <p>Tractors, harvesters, tillers, sprayers, and more — all in one place.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="categories-section">
+    <div class="container">
+        <h2 class="section-title">Equipment Categories</h2>
+        <div class="categories-grid">
+            <a href="equipment.html?category=Tractor" class="category-card">
+                <div class="category-icon">🚜</div>
+                <h3>Tractors</h3>
+                <p>Power your farm operations</p>
+            </a>
+            <a href="equipment.html?category=Harvester" class="category-card">
+                <div class="category-icon">🌾</div>
+                <h3>Harvesters</h3>
+                <p>Efficient crop harvesting</p>
+            </a>
+            <a href="equipment.html?category=Tiller" class="category-card">
+                <div class="category-icon">⚙️</div>
+                <h3>Tillers</h3>
+                <p>Soil preparation made easy</p>
+            </a>
+            <a href="equipment.html?category=Irrigation" class="category-card">
+                <div class="category-icon">💧</div>
+                <h3>Irrigation</h3>
+                <p>Water management solutions</p>
+            </a>
+            <a href="equipment.html?category=Sprayer" class="category-card">
+                <div class="category-icon">🌿</div>
+                <h3>Sprayers</h3>
+                <p>Crop protection equipment</p>
+            </a>
+            <a href="equipment.html?category=Planting" class="category-card">
+                <div class="category-icon">🌱</div>
+                <h3>Planting</h3>
+                <p>Precision planting tools</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Ready to Boost Your Farm Productivity?</h2>
+        <p>Join hundreds of farmers who trust AgriRent for their equipment needs.</p>
+        <a href="register.html" class="btn btn-outline-white btn-large">Register Now — It's Free!</a>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>🌾 AgriRent</h3>
+                <p>Your trusted partner for agriculture equipment rental. Empowering farmers with the right tools.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="equipment.html">Equipment</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>📧 info@agrirent.com</p>
+                <p>📞 +91 98765 43210</p>
+                <p>📍 Agricultural Zone, Farm City</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 AgriRent — Agriculture Equipment Rental System. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

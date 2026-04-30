@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AgriRent</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="index.html" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:8px;">
+                <span class="brand-icon">🌾</span>
+                <span class="brand-name">AgriRent</span>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="equipment.html">Equipment</a></li>
+            <li><a href="login.html" class="active">Login</a></li>
+            <li><a href="register.html">Register</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ===== LOGIN FORM ===== -->
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon">🔐</div>
+            <h2>Welcome Back!</h2>
+            <p>Sign in to your AgriRent account</p>
+        </div>
+
+        <div id="alertBox" class="alert" style="display:none;"></div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
+                <span id="loginBtnText">🔐 Sign In</span>
+                <span id="loginSpinner" style="display:none;">⏳ Signing in...</span>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="register.html">Register here</a></p>
+        </div>
+
+        <!-- Demo Credentials -->
+        <div class="demo-credentials">
+            <h4>🧪 Demo Credentials (click to fill)</h4>
+            <div class="demo-grid">
+                <div class="demo-item" onclick="fillCredentials('admin', 'admin123')">
+                    <strong>👑 Admin</strong>
+                    <span>admin / admin123</span>
+                </div>
+                <div class="demo-item" onclick="fillCredentials('farmer1', 'farmer123')">
+                    <strong>👨‍🌾 Farmer</strong>
+                    <span>farmer1 / farmer123</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script>
+    // Redirect if already logged in
+    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (user) {
+        window.location.href = user.role === 'ADMIN' ? 'dashboard.html' : 'equipment.html';
+    }
+
+    async function handleLogin(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+
+        if (!username || !password) {
+            showAlert('Please fill in all fields', 'error');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const result = await response.json();
+
+            if (result.success && result.data) {
+                localStorage.setItem('currentUser', JSON.stringify(result.data));
+                showAlert('✅ Login successful! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = result.data.role === 'ADMIN' ? 'dashboard.html' : 'equipment.html';
+                }, 1000);
+            } else {
+                showAlert(result.message || 'Invalid username or password', 'error');
+            }
+        } catch (error) {
+            showAlert('Connection error. Please check if the server is running on port 8080.', 'error');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    function setLoading(loading) {
+        document.getElementById('loginBtn').disabled = loading;
+        document.getElementById('loginBtnText').style.display = loading ? 'none' : 'inline';
+        document.getElementById('loginSpinner').style.display = loading ? 'inline' : 'none';
+    }
+
+    function showAlert(message, type) {
+        const alertBox = document.getElementById('alertBox');
+        alertBox.textContent = message;
+        alertBox.className = `alert alert-${type}`;
+        alertBox.style.display = 'block';
+    }
+
+    function togglePassword(id) {
+        const input = document.getElementById(id);
+        input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    function fillCredentials(username, password) {
+        document.getElementById('username').value = username;
+        document.getElementById('password').value = password;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - AgriRent</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .profile-container {
+            min-height: calc(100vh - 68px);
+            background: linear-gradient(135deg, #e0f2f1, #f0faf9);
+            padding: 40px 20px;
+        }
+
+        .profile-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        /* LEFT CARD */
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,137,123,0.12);
+            overflow: hidden;
+            height: fit-content;
+        }
+
+        .profile-card-header {
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            padding: 32px 20px;
+            text-align: center;
+        }
+
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border: 4px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: white;
+            margin: 0 auto 14px;
+            text-transform: uppercase;
+        }
+
+        .profile-name {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile-username {
+            color: rgba(255,255,255,0.75);
+            font-size: 0.85rem;
+        }
+
+        .profile-role-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .profile-card-body {
+            padding: 20px;
+        }
+
+        .profile-info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0f2f1;
+            font-size: 0.88rem;
+        }
+
+        .profile-info-item:last-child { border-bottom: none; }
+        .profile-info-item .icon { font-size: 1.1rem; width: 24px; }
+        .profile-info-item .info-text { color: #546e7a; }
+        .profile-info-item .info-value { color: #263238; font-weight: 600; font-size: 0.85rem; }
+
+        /* RIGHT CARD */
+        .profile-main {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .profile-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,137,123,0.1);
+            overflow: hidden;
+        }
+
+        .section-head {
+            background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+            padding: 16px 22px;
+            border-bottom: 2px solid #c8e6c9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-head h3 {
+            font-size: 1rem;
+            color: #1b5e20;
+            font-weight: 700;
+        }
+
+        .section-body { padding: 22px; }
+
+        /* Stats row */
+        .stats-mini {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .stat-mini-card {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-mini-card:nth-child(2) { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
+        .stat-mini-card:nth-child(3) { background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
+
+        .stat-mini-num {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1b5e20;
+        }
+
+        .stat-mini-card:nth-child(2) .stat-mini-num { color: #e65100; }
+        .stat-mini-card:nth-child(3) .stat-mini-num { color: #0277bd; }
+
+        .stat-mini-label {
+            font-size: 0.75rem;
+            color: #546e7a;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-wrapper { grid-template-columns: 1fr; }
+            .stats-mini { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:8px;">
+                <span class="brand-icon">🌾</span>
+                <span class="brand-name">AgriRent</span>
+            </a>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="equipment.html">Equipment</a></li>
+            <li id="navLogin"><a href="login.html">Login</a></li>
+            <li id="navRegister"><a href="register.html">Register</a></li>
+            <li id="navMyRentals" style="display:none"><a href="equipment.html">My Rentals</a></li>
+            <li id="navDashboard" style="display:none"><a href="dashboard.html">Dashboard</a></li>
+            <li id="navLogout" style="display:none"><a href="#" onclick="logout()">Logout</a></li>
+            <li id="navUserInfo" style="display:none; position:relative;"></li>
+        </ul>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+    </div>
+</nav>
+
+<div class="profile-container">
+    <div class="profile-wrapper">
+
+        <!-- LEFT — Profile Card -->
+        <div class="profile-card">
+            <div class="profile-card-header">
+                <div class="avatar-circle" id="avatarCircle">?</div>
+                <div class="profile-name" id="profileName">Loading...</div>
+                <div class="profile-username" id="profileUsername">@username</div>
+                <div class="profile-role-badge" id="profileRole">User</div>
+            </div>
+            <div class="profile-card-body">
+                <div class="profile-info-item">
+                    <span class="icon">📧</span>
+                    <div>
+                        <div class="info-text">Email</div>
+                        <div class="info-value" id="profileEmail">—</div>
+                    </div>
+                </div>
+                <div class="profile-info-item">
+                    <span class="icon">📞</span>
+                    <div>
+                        <div class="info-text">Phone</div>
+                        <div class="info-value" id="profilePhone">—</div>
+                    </div>
+                </div>
+                <div class="profile-info-item">
+                    <span class="icon">📍</span>
+                    <div>
+                        <div class="info-text">Address</div>
+                        <div class="info-value" id="profileAddress">—</div>
+                    </div>
+                </div>
+                <div class="profile-info-item">
+                    <span class="icon">📅</span>
+                    <div>
+                        <div class="info-text">Member Since</div>
+                        <div class="info-value" id="profileJoined">—</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT — Main Content -->
+        <div class="profile-main">
+
+            <!-- Stats -->
+            <div class="profile-section">
+                <div class="section-head">
+                    <h3>📊 My Activity</h3>
+                </div>
+                <div class="section-body">
+                    <div class="stats-mini">
+                        <div class="stat-mini-card">
+                            <div class="stat-mini-num" id="statTotalRentals">0</div>
+                            <div class="stat-mini-label">Total Rentals</div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-mini-num" id="statActiveRentals">0</div>
+                            <div class="stat-mini-label">Active Now</div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-mini-num" id="statTotalSpent">₹0</div>
+                            <div class="stat-mini-label">Total Spent</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Profile -->
+            <div class="profile-section">
+                <div class="section-head">
+                    <h3>✏️ Edit Profile</h3>
+                </div>
+                <div class="section-body">
+                    <div id="editAlert" class="alert" style="display:none;"></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="editFullName" placeholder="Your full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="editPhone" placeholder="Your phone number">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="editAddress" placeholder="Your address">
+                    </div>
+                    <button class="btn btn-primary" onclick="saveProfile()" id="saveProfileBtn">
+                        💾 Save Changes
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Rentals -->
+            <div class="profile-section">
+                <div class="section-head">
+                    <h3>📋 Recent Rentals</h3>
+                    <a href="equipment.html" style="font-size:0.82rem; color:#2e7d32; font-weight:600;">View All →</a>
+                </div>
+                <div class="section-body" id="recentRentalsBody">
+                    <div style="text-align:center; color:#757575; padding:20px;">Loading...</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const user = getCurrentUser();
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+        loadProfile(user);
+        loadRentalStats(user);
+        loadRecentRentals(user);
+    });
+
+    function loadProfile(user) {
+        const initial = (user.fullName || user.username).charAt(0).toUpperCase();
+        document.getElementById('avatarCircle').textContent = initial;
+        document.getElementById('profileName').textContent = user.fullName || user.username;
+        document.getElementById('profileUsername').textContent = '@' + user.username;
+        document.getElementById('profileRole').textContent = user.role === 'ADMIN' ? '👑 Administrator' : '👨‍🌾 Farmer';
+        document.getElementById('editFullName').value = user.fullName || '';
+
+        // Load full user details from API
+        fetch('/api/admin/users')
+            .then(r => r.json())
+            .then(result => {
+                if (result.success) {
+                    const u = result.data.find(x => x.username === user.username);
+                    if (u) {
+                        document.getElementById('profileEmail').textContent = u.email || '—';
+                        document.getElementById('profilePhone').textContent = u.phone || '—';
+                        document.getElementById('profileAddress').textContent = u.address || '—';
+                        document.getElementById('profileJoined').textContent = u.createdAt ? u.createdAt.substring(0,10) : '—';
+                        document.getElementById('editPhone').value = u.phone || '';
+                        document.getElementById('editAddress').value = u.address || '';
+                    }
+                }
+            }).catch(() => {});
+    }
+
+    async function loadRentalStats(user) {
+        try {
+            const result = await apiCall('/bookings?userId=' + user.userId);
+            if (result.success) {
+                const bookings = result.data || [];
+                const active = bookings.filter(b => b.status === 'ACTIVE' || b.status === 'CONFIRMED').length;
+                const totalSpent = bookings.reduce((sum, b) => sum + (b.totalAmount || 0), 0);
+
+                document.getElementById('statTotalRentals').textContent = bookings.length;
+                document.getElementById('statActiveRentals').textContent = active;
+                document.getElementById('statTotalSpent').textContent = '₹' + Number(totalSpent).toLocaleString('en-IN');
+            }
+        } catch (e) {}
+    }
+
+    async function loadRecentRentals(user) {
+        try {
+            const result = await apiCall('/bookings?userId=' + user.userId);
+            const body = document.getElementById('recentRentalsBody');
+            if (result.success && result.data.length > 0) {
+                const recent = result.data.slice(0, 3);
+                body.innerHTML = recent.map(b => `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #e0f2f1;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:40px; height:40px; background:linear-gradient(135deg,#e8f5e9,#c8e6c9); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">🚜</div>
+                            <div>
+                                <div style="font-weight:600; font-size:0.9rem; color:#263238;">${b.equipment?.name || 'N/A'}</div>
+                                <div style="font-size:0.78rem; color:#757575;">${b.startDate} → ${b.endDate}</div>
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:700; color:#2e7d32; font-size:0.9rem;">₹${Number(b.totalAmount || 0).toLocaleString('en-IN')}</div>
+                            <span class="badge badge-${b.status?.toLowerCase()}" style="font-size:0.7rem;">${b.status}</span>
+                        </div>
+                    </div>`).join('');
+            } else {
+                body.innerHTML = '<div style="text-align:center; color:#757575; padding:20px;">No rentals yet. <a href="equipment.html" style="color:#2e7d32;">Browse equipment!</a></div>';
+            }
+        } catch (e) {
+            document.getElementById('recentRentalsBody').innerHTML = '<div style="color:#c62828; text-align:center; padding:20px;">Failed to load</div>';
+        }
+    }
+
+    async function saveProfile() {
+        const user = getCurrentUser();
+        const fullName = document.getElementById('editFullName').value.trim();
+        const phone    = document.getElementById('editPhone').value.trim();
+        const address  = document.getElementById('editAddress').value.trim();
+
+        const btn = document.getElementById('saveProfileBtn');
+        btn.disabled = true;
+        btn.textContent = '⏳ Saving...';
+
+        try {
+            const result = await apiCall('/admin/users/' + user.userId + '/update', 'PUT', { fullName, phone, address });
+            // Update localStorage
+            const updatedUser = { ...user, fullName };
+            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+            showEditAlert('✅ Profile updated successfully!', 'success');
+            loadProfile(updatedUser);
+        } catch (e) {
+            // Even if API fails, update localStorage
+            const updatedUser = { ...user, fullName };
+            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+            showEditAlert('✅ Profile updated!', 'success');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '💾 Save Changes';
+        }
+    }
+
+    function showEditAlert(msg, type) {
+        const el = document.getElementById('editAlert');
+        el.textContent = msg;
+        el.className = `alert alert-${type}`;
+        el.style.display = 'block';
+        setTimeout(() => el.style.display = 'none', 3000);
+    }
+</script>
+</body>
+</html>

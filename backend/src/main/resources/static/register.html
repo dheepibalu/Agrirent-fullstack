@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AgriRent</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="index.html" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:8px;">
+                <span class="brand-icon">🌾</span>
+                <span class="brand-name">AgriRent</span>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="equipment.html">Equipment</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="register.html" class="active">Register</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ===== REGISTER FORM ===== -->
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon">🌾</div>
+            <h2>Create Your Account</h2>
+            <p>Join AgriRent and start renting equipment today</p>
+        </div>
+
+        <div id="alertBox" class="alert" style="display:none;"></div>
+
+        <form id="registerForm" onsubmit="handleRegister(event)">
+            <div class="form-group">
+                <label for="fullName">Full Name *</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="username">Username *</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔤</span>
+                        <input type="text" id="username" name="username" placeholder="Choose username" required minlength="3">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📧</span>
+                        <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="password" name="password" placeholder="Min 6 characters" required minlength="6">
+                        <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📞</span>
+                        <input type="tel" id="phone" name="phone" placeholder="Your phone number">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">📍</span>
+                    <input type="text" id="address" name="address" placeholder="Your address (optional)">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" id="registerBtn">
+                <span id="registerBtnText">🌾 Create Account</span>
+                <span id="registerSpinner" style="display:none;">⏳ Creating account...</span>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="login.html">Login here</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script>
+    // Redirect if already logged in
+    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (user) {
+        window.location.href = user.role === 'ADMIN' ? 'dashboard.html' : 'equipment.html';
+    }
+
+    async function handleRegister(event) {
+        event.preventDefault();
+
+        const payload = {
+            fullName: document.getElementById('fullName').value.trim(),
+            username: document.getElementById('username').value.trim(),
+            email:    document.getElementById('email').value.trim(),
+            password: document.getElementById('password').value,
+            phone:    document.getElementById('phone').value.trim(),
+            address:  document.getElementById('address').value.trim()
+        };
+
+        if (!payload.fullName || !payload.username || !payload.email || !payload.password) {
+            showAlert('Please fill in all required fields', 'error');
+            return;
+        }
+
+        if (payload.password.length < 6) {
+            showAlert('Password must be at least 6 characters', 'error');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showAlert('✅ Registration successful! Redirecting to login...', 'success');
+                setTimeout(() => window.location.href = 'login.html', 2000);
+            } else {
+                showAlert(result.message || 'Registration failed. Please try again.', 'error');
+            }
+        } catch (error) {
+            showAlert('Connection error. Please check if the server is running.', 'error');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    function setLoading(loading) {
+        document.getElementById('registerBtn').disabled = loading;
+        document.getElementById('registerBtnText').style.display = loading ? 'none' : 'inline';
+        document.getElementById('registerSpinner').style.display = loading ? 'inline' : 'none';
+    }
+
+    function showAlert(message, type) {
+        const alertBox = document.getElementById('alertBox');
+        alertBox.textContent = message;
+        alertBox.className = `alert alert-${type}`;
+        alertBox.style.display = 'block';
+        if (type === 'success') {
+            setTimeout(() => alertBox.style.display = 'none', 3000);
+        }
+    }
+
+    function togglePassword(id) {
+        const input = document.getElementById(id);
+        input.type = input.type === 'password' ? 'text' : 'password';
+    }
+</script>
+</body>
+</html>
